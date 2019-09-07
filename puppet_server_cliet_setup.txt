@@ -1,0 +1,58 @@
+On the puppet server 
+=========================
+1. Install the repo and pkgs.
+
+sudo rpm -Uvh https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm
+
+2. Install the puppet server
+
+   yum install puppetserver
+
+3. Change the memory limit to minimum to run the puppet:
+
+   vi /etc/sysconfig/puppetserver
+
+  goto the line which starts with the below string:
+
+  replace 2g with 512m  
+
+  JAVA_ARGS="-Xms2g -Xmx2g"
+
+
+On the clien side:
+======================
+
+1. Install the repos:
+
+
+sudo rpm -Uvh https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm
+
+2. Install the agent and configure:
+
+   yum install puppet
+
+   Systemctl restart puppet
+
+3. Enable the server communication:
+
+   vi /etc/puppetlabs/puppet/puppet.conf
+
+   goto last line and add the below entry
+
+   server = <puppet server name>
+
+4. Restart the puppet agent.
+
+On the server side : Signing the agent
+=====================
+
+   puppet cert list --all ==> it should show the client certficate.
+
+   copy the client certificate and paste 
+
+   puppet cert sign "client certficate"
+
+    OR 
+   puppet cert  sign --all
+
+
